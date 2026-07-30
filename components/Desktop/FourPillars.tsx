@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { FOUR_PILLARS } from '@/app/data'
 import { Camera, Mountain, Lightbulb, Users } from 'lucide-react'
 import { ScrollReveal } from '../ScrollReveal'
@@ -14,7 +14,7 @@ const iconMap: Record<string, React.ReactNode> = {
 }
 
 export function DesktopFourPillars() {
-  const pillarVariants = {
+  const pillarVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: (custom: number) => ({
       opacity: 1,
@@ -22,7 +22,6 @@ export function DesktopFourPillars() {
       transition: {
         delay: custom * 0.08,
         duration: 0.6,
-        ease: 'easeOut',
       },
     }),
   }
@@ -59,9 +58,24 @@ export function DesktopFourPillars() {
               custom={idx}
             >
               <div
-                className="border p-8 flex flex-col items-center text-center hover:border-[var(--gold)] transition-all duration-300 hover:shadow-lg"
+                className="border p-8 flex flex-col items-center text-center transition-all duration-300 relative overflow-hidden"
                 style={{ borderColor: 'var(--gold-40)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--gold)'
+                  e.currentTarget.style.backgroundColor = 'rgba(201,168,76,0.04)'
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(201,168,76,0.1)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--gold-40)'
+                  e.currentTarget.style.backgroundColor = 'transparent'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
               >
+                {/* Top accent line */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-[2px]"
+                  style={{ background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }}
+                />
                 {/* Circular Badge with Letter */}
                 <motion.div
                   className="w-16 h-16 rounded-full flex items-center justify-center mb-6 text-2xl font-600"

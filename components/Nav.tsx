@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useSpring } from 'framer-motion'
 import { SCHOOL_NAME } from '@/app/data'
 
 interface NavProps {
@@ -10,6 +10,8 @@ interface NavProps {
 
 export function Nav({ onEnrollClick }: NavProps) {
   const [isScrolled, setIsScrolled] = useState(false)
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,9 +24,10 @@ export function Nav({ onEnrollClick }: NavProps) {
 
   return (
     <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+      aria-label="Main navigation"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#080808] border-b border-[rgba(201,168,76,0.15)]'
+          ? 'bg-[rgba(8,8,8,0.85)] backdrop-blur-md border-b border-[rgba(201,168,76,0.15)]'
           : 'bg-transparent'
       }`}
       initial={{ opacity: 0, y: -20 }}
@@ -35,8 +38,9 @@ export function Nav({ onEnrollClick }: NavProps) {
         {/* Wordmark */}
         <div className="flex-1">
           <h2
-            className="font-serif font-600 text-sm tracking-widest"
+            className="font-serif font-600 text-sm tracking-widest cursor-pointer"
             style={{ letterSpacing: '0.15em', color: 'var(--cream)' }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             {SCHOOL_NAME}
           </h2>
@@ -65,6 +69,16 @@ export function Nav({ onEnrollClick }: NavProps) {
           Enroll Now
         </button>
       </div>
+
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-[2px] origin-left"
+        style={{
+          scaleX,
+          backgroundColor: 'var(--gold)',
+        }}
+      />
     </motion.nav>
   )
 }
+

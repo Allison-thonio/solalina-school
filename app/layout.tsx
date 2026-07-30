@@ -18,11 +18,16 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Solalina Photography School',
   description: 'A 2-week intensive photography program in Yenagoa, Bayelsa. Learn from experienced professionals. Limited to 40 participants.',
-  generator: 'v0.app',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://solalina-school.vercel.app'),
   openGraph: {
     title: 'Solalina Photography School',
     description: 'Discover. Learn. Capture. A photography intensive by Solalina Studios.',
     type: 'website',
+    siteName: 'Solalina Photography School',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 }
 

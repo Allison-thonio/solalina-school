@@ -53,14 +53,21 @@ export function DesktopGallery() {
               custom={idx}
             >
               <div
-                className="relative aspect-square overflow-hidden border group cursor-pointer"
+                className="relative aspect-square overflow-hidden border group cursor-pointer transition-shadow duration-300"
                 style={{ borderColor: 'var(--gold)', borderWidth: '2px' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 30px rgba(201,168,76,0.2)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
               >
                 <Image
                   src={img.src}
                   alt={img.alt}
                   fill
-                  className="object-cover transition-all duration-300 group-hover:scale-[1.03] group-hover:brightness-75"
+                  loading="lazy"
+                  className="object-cover transition-all duration-500 group-hover:scale-[1.05] group-hover:brightness-75"
                 />
 
                 {/* Frame Tag */}

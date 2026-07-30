@@ -7,6 +7,7 @@ export const SCHOOL_DESCRIPTION =
 
 export const CONTACT = {
   phone: '07120186131',
+  whatsapp: 'https://wa.me/2347120186131',
   email: 'chukwuemekanwoke22@gmail.com',
   address: 'Solalina Studios, Saptex Road, Yenagoa, Bayelsa State',
   instagram: 'https://instagram.com/solalinastudios',

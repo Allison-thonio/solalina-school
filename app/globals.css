@@ -44,6 +44,36 @@
   }
 }
 
+/* Selection styling */
+::selection {
+  background-color: var(--gold);
+  color: var(--ink);
+}
+
+/* Focus ring for accessibility */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-40);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
 /* Utility Classes */
 .font-serif {
   font-family: var(--font-serif), serif;
@@ -119,4 +149,9 @@
   background-color: var(--gold-40);
   border-radius: 50%;
   margin: 0 4px;
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
 }

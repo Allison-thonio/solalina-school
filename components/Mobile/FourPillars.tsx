@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { FOUR_PILLARS } from '@/app/data'
 import { Camera, Mountain, Lightbulb, Users } from 'lucide-react'
 import { ScrollReveal } from '../ScrollReveal'
@@ -14,7 +14,7 @@ const iconMap: Record<string, React.ReactNode> = {
 }
 
 export function MobileFourPillars() {
-  const pillarVariants = {
+  const pillarVariants: Variants = {
     hidden: { opacity: 0, y: 16 },
     visible: (custom: number) => ({
       opacity: 1,
@@ -22,7 +22,6 @@ export function MobileFourPillars() {
       transition: {
         delay: custom * 0.1,
         duration: 0.5,
-        ease: 'easeOut',
       },
     }),
   }

@@ -1,5 +1,5 @@
 {
-  "name": "my-project",
+  "name": "solalina-school",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -30,6 +30,9 @@
     "postcss": "^8.5",
     "tailwindcss": "^4.3.3",
     "typescript": "5.7.3"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "pnpm": {
     "overrides": {
