@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+
+/* Solalina Photography School — Design Tokens */
+:root {
+  --ink: #080808;
+  --gold: #C9A84C;
+  --cream: #F5F0E8;
+  --cream-70: rgba(245, 240, 232, 0.7);
+  --cream-50: rgba(245, 240, 232, 0.5);
+  --cream-35: rgba(245, 240, 232, 0.35);
+  --gold-40: rgba(201, 168, 76, 0.4);
+  --gold-25: rgba(201, 168, 76, 0.25);
+  --gold-15: rgba(201, 168, 76, 0.15);
+  --gold-8: rgba(201, 168, 76, 0.08);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans), sans-serif;
+    background-color: var(--ink);
+    color: var(--cream);
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif), serif;
+  }
+}
+
+/* Utility Classes */
+.font-serif {
+  font-family: var(--font-serif), serif;
+}
+
+.font-sans {
+  font-family: var(--font-sans), sans-serif;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Film Grain Overlay */
+@keyframes grain {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.film-grain {
+  position: relative;
+  overflow: hidden;
+}
+
+.film-grain::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise" seed="1"/></filter><rect width="100%" height="100%" fill="rgba(0,0,0,0.04)" filter="url(%23noiseFilter)"/></svg>');
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 1;
+  animation: grain 0.8s steps(10) infinite;
+}
+
+/* Gold Hairline Divider */
+.gold-divider {
+  border-top: 1px solid var(--gold-40);
+}
+
+/* Sprocket Hole Strip */
+.sprocket-strip {
+  height: 14px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 8px,
+    var(--gold-40) 8px,
+    var(--gold-40) 10px
+  );
+  background-size: 16px 100%;
+  background-position: 0 center;
+  margin: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sprocket-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--gold-40);
+  border-radius: 50%;
+  margin: 0 4px;
+}
