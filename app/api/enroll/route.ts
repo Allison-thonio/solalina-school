@@ -82,45 +82,38 @@ export async function POST(req: NextRequest) {
   }
 
   const accessKey = process.env.WEB3FORMS_KEY
-  if (!accessKey) {
-    console.error('WEB3FORMS_KEY is not set in the environment.')
-    return NextResponse.json(
-      { success: false, message: 'Enrollment is temporarily unavailable.' },
-      { status: 500 }
-    )
+
+  if (accessKey) {
+    try {
+      const outgoing = new FormData()
+      outgoing.append('access_key', accessKey)
+      outgoing.append('subject', `New Enrollment: ${name} (${course})`)
+      outgoing.append('from_name', 'Solalina Photography School')
+      outgoing.append('replyto', email)
+      outgoing.append('name', name)
+      outgoing.append('phone', phone)
+      outgoing.append('email', email)
+      outgoing.append('course', course)
+
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: outgoing,
+      })
+
+      const data = await res.json()
+      if (!data.success) {
+        console.warn('Web3Forms response:', data.message)
+      }
+    } catch (err) {
+      console.error('Web3Forms dispatch error:', err)
+    }
+  } else {
+    console.log('Notice: WEB3FORMS_KEY environment variable is not set. Proceeding to WhatsApp redirect.')
   }
 
-  try {
-    const outgoing = new FormData()
-    outgoing.append('access_key', accessKey)
-    outgoing.append('subject', `New Enrollment: ${name} (${course})`)
-    outgoing.append('from_name', 'Solalina Photography School')
-    outgoing.append('replyto', email)
-    outgoing.append('name', name)
-    outgoing.append('phone', phone)
-    outgoing.append('email', email)
-    outgoing.append('course', course)
-    if (proof && proof.size > 0 && proof.size <= MAX_FILE_BYTES) {
-      outgoing.append('attachment', proof, proof.name)
-    }
-
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { Accept: 'application/json' },
-      body: outgoing,
-    })
-
-    const data = await res.json()
-
-    if (!data.success) {
-      console.error('Web3Forms rejected submission:', data.message)
-      return NextResponse.json(
-        { success: false, message: 'Submission failed. Please try again.' },
-        { status: 502 }
-      )
-    }
-
-    return NextResponse.json({ success: true })
+  // Always return success so the user can proceed directly to WhatsApp receipt submission!
+  return NextResponse.json({ success: true })
   } catch (err) {
     console.error('Enroll route error:', err)
     return NextResponse.json(
