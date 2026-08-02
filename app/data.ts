@@ -37,8 +37,8 @@ export const HERO_SECTION = {
     'Learn the art and science of photography from experienced professionals. Limited to 40 participants.',
   primaryCTA: 'Enroll Now',
   secondaryCTA: 'See Curriculum',
-  backgroundImageDesktop: '/images/hero-desktop.png',
-  backgroundImageMobile: '/images/hero-mobile.png',
+  backgroundImageDesktop: '/images/hero-desktop.jpg',
+  backgroundImageMobile: '/images/hero-mobile.jpg',
 }
 
 export const STAT_STRIP = [
@@ -82,25 +82,25 @@ export const GALLERY_IMAGES = [
   {
     id: 'img-1',
     frameTag: 'FRM 01A',
-    src: '/images/gallery-1.png',
+    src: '/images/gallery-1.jpg',
     alt: 'Creative studio portrait session with paint brushes',
   },
   {
     id: 'img-2',
     frameTag: 'FRM 02B',
-    src: '/images/gallery-2.png',
+    src: '/images/gallery-2.jpg',
     alt: 'Expression & emotion studio portrait session',
   },
   {
     id: 'img-3',
     frameTag: 'FRM 03C',
-    src: '/images/gallery-3.png',
+    src: '/images/gallery-3.jpg',
     alt: 'High-key studio silhouette portrait lighting',
   },
   {
     id: 'img-4',
     frameTag: 'FRM 04D',
-    src: '/images/gallery-4.png',
+    src: '/images/gallery-4.jpg',
     alt: 'Hands-on practical ring-light studio setup session',
   },
 ]
