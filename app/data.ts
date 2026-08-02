@@ -6,9 +6,9 @@ export const SCHOOL_DESCRIPTION =
   'A 2-week intensive photography program designed to transform your passion into skill. Learn from experienced professionals in a limited cohort.'
 
 export const CONTACT = {
-  phone: '07120186131',
-  whatsapp: 'https://wa.me/2347120186131',
-  email: 'chukwuemekanwoke22@gmail.com',
+  phone: '07040227101',
+  whatsapp: 'https://wa.me/2347040227101',
+  email: 'Solalinastudios26@gmail.com',
   address: 'Solalina Studios, Saptex Road, Yenagoa, Bayelsa State',
   instagram: 'https://instagram.com/solalinastudios',
 }
@@ -25,9 +25,9 @@ export const COURSES = [
 ]
 
 export const BANK_DETAILS = {
-  bank: 'GTBank',
-  accountNumber: '0123456789',
-  accountName: 'Solalina Photography School',
+  bank: 'Moniepoint',
+  accountNumber: '8162836010',
+  accountName: 'Solalina studios/Moses Dickson Oruaza',
 }
 
 export const HERO_SECTION = {
