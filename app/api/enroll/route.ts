@@ -114,11 +114,5 @@ export async function POST(req: NextRequest) {
 
   // Always return success so the user can proceed directly to WhatsApp receipt submission!
   return NextResponse.json({ success: true })
-  } catch (err) {
-    console.error('Enroll route error:', err)
-    return NextResponse.json(
-      { success: false, message: 'Something went wrong. Please try again.' },
-      { status: 500 }
-    )
-  }
 }
+
