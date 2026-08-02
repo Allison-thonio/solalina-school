@@ -41,8 +41,8 @@ export function DesktopGallery() {
           </h2>
         </ScrollReveal>
 
-        {/* Gallery Grid - 3 Images */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Gallery Grid - 4 Images */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {GALLERY_IMAGES.map((img, idx) => (
             <motion.div
               key={img.id}

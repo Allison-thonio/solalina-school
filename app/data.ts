@@ -81,21 +81,27 @@ export const FOUR_PILLARS = [
 export const GALLERY_IMAGES = [
   {
     id: 'img-1',
-    frameTag: 'FRM 07A',
+    frameTag: 'FRM 01A',
     src: '/images/gallery-1.png',
-    alt: 'Landscape photography in golden hour light',
+    alt: 'Creative studio portrait session with paint brushes',
   },
   {
     id: 'img-2',
-    frameTag: 'FRM 12B',
+    frameTag: 'FRM 02B',
     src: '/images/gallery-2.png',
-    alt: 'Portrait photography with natural lighting',
+    alt: 'Expression & emotion studio portrait session',
   },
   {
     id: 'img-3',
-    frameTag: 'FRM 18C',
+    frameTag: 'FRM 03C',
     src: '/images/gallery-3.png',
-    alt: 'Street photography capturing candid moments',
+    alt: 'High-key studio silhouette portrait lighting',
+  },
+  {
+    id: 'img-4',
+    frameTag: 'FRM 04D',
+    src: '/images/gallery-4.png',
+    alt: 'Hands-on practical ring-light studio setup session',
   },
 ]
 
