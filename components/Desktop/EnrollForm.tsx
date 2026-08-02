@@ -1,19 +1,17 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { COURSES, BANK_DETAILS, ENROLLMENT_FORM } from '@/app/data'
+import { COURSES, BANK_DETAILS, ENROLLMENT_FORM, CONTACT } from '@/app/data'
 import { ScrollReveal } from '../ScrollReveal'
 import { SprocketDivider } from '../SprocketDivider'
 
 export function DesktopEnrollForm() {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null)
-  const [fileName, setFileName] = useState<string>('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [courseError, setCourseError] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -28,13 +26,6 @@ export function DesktopEnrollForm() {
     setSelectedCourse(courseId)
     setIsOpen(false)
     setCourseError(false)
-  }
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setFileName(file.name)
-    }
   }
 
   const handleCopyAccount = async () => {
@@ -61,8 +52,15 @@ export function DesktopEnrollForm() {
       return
     }
 
-    const formData = new FormData(e.currentTarget)
+    const formElement = e.currentTarget
+    const formData = new FormData(formElement)
     formData.set('course', selectedCourse)
+
+    const name = formData.get('name') as string
+    const email = formData.get('email') as string
+    const phone = formData.get('phone') as string
+    const courseObj = COURSES.find((c) => c.id === selectedCourse)
+    const courseLabel = courseObj ? courseObj.label : selectedCourse
 
     setIsSubmitting(true)
 
@@ -84,6 +82,17 @@ export function DesktopEnrollForm() {
       if (formRef.current) {
         formRef.current.style.display = 'none'
       }
+
+      // Construct pre-filled WhatsApp message
+      const whatsappMsg = encodeURIComponent(
+        `Hello Solalina Studios,\n\nI have confirmed my enrollment application on the website!\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nCourse: ${courseLabel}\n\nHere is my proof of payment receipt:`
+      )
+      const whatsappUrl = `https://wa.me/2347040227101?text=${whatsappMsg}`
+
+      // Redirect after brief timeout
+      setTimeout(() => {
+        window.open(whatsappUrl, '_blank')
+      }, 1000)
     } catch (err) {
       console.error('Submission error:', err)
       setError(ENROLLMENT_FORM.errorMessages.submission)
@@ -94,32 +103,62 @@ export function DesktopEnrollForm() {
   return (
     <section className="bg-[#080808] py-20 px-4" id="enroll">
       <SprocketDivider />
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         <ScrollReveal>
           <div
-            className="border p-12"
+            className="border p-8 sm:p-12"
             style={{
               borderColor: 'var(--gold-40)',
               background: 'linear-gradient(180deg, var(--gold-8), transparent)',
             }}
           >
             <h3
-              className="font-serif text-3xl font-600 mb-3"
+              className="font-serif text-3xl font-600 mb-3 text-center sm:text-left"
               style={{ color: 'var(--cream)' }}
             >
               {ENROLLMENT_FORM.heading}
             </h3>
             <p
-              className="text-base mb-8"
+              className="text-sm mb-8 text-center sm:text-left"
               id="form-description"
               style={{ color: 'var(--cream-70)' }}
             >
               {ENROLLMENT_FORM.description}
             </p>
 
+            {/* 4-Step Guide Header */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-10 pb-8 border-b" style={{ borderColor: 'var(--gold-40)' }}>
+              {ENROLLMENT_FORM.steps.map((s) => (
+                <div key={s.step} className="flex flex-col items-center text-center p-3 border rounded-sm" style={{ borderColor: 'rgba(201,168,76,0.2)', backgroundColor: 'rgba(201,168,76,0.03)' }}>
+                  <span className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold mb-2" style={{ backgroundColor: 'var(--gold)', color: 'var(--ink)' }}>
+                    {s.step}
+                  </span>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--gold)' }}>
+                    {s.title}
+                  </p>
+                  <p className="text-[11px] leading-tight" style={{ color: 'var(--cream-70)' }}>
+                    {s.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
             {isSuccess ? (
-              <div className="text-center" style={{ color: 'var(--gold)' }}>
-                <p className="text-lg font-600">{ENROLLMENT_FORM.successMessage}</p>
+              <div className="text-center py-8 space-y-4" style={{ color: 'var(--gold)' }}>
+                <div className="w-12 h-12 rounded-full border-2 border-[var(--gold)] flex items-center justify-center mx-auto text-xl font-bold">
+                  ✓
+                </div>
+                <p className="text-xl font-serif font-600">{ENROLLMENT_FORM.successMessage}</p>
+                <p className="text-sm text-gray-300">If WhatsApp doesn't open automatically, click the button below to send your receipt:</p>
+                <a
+                  href={CONTACT.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-3 text-sm font-semibold tracking-wider uppercase transition-all duration-300"
+                  style={{ backgroundColor: 'var(--gold)', color: 'var(--ink)' }}
+                >
+                  💬 Open WhatsApp Now
+                </a>
               </div>
             ) : (
               <form ref={formRef} onSubmit={handleSubmit} className="space-y-6" onClick={handleOutsideClick}>
@@ -198,7 +237,7 @@ export function DesktopEnrollForm() {
                 </div>
 
                 {/* Name & Phone Row */}
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>
                       {ENROLLMENT_FORM.fields.name}
@@ -263,13 +302,13 @@ export function DesktopEnrollForm() {
                   style={{ borderColor: 'var(--gold-40)' }}
                 >
                   <p
-                    className="text-xs tracking-widest uppercase mb-6"
+                    className="text-xs tracking-widest uppercase mb-4"
                     style={{ color: 'var(--gold)', letterSpacing: '0.08em', fontFamily: 'JetBrains Mono, monospace' }}
                   >
                     {ENROLLMENT_FORM.fields.payment}
                   </p>
                   <div
-                    className="grid grid-cols-3 gap-8"
+                    className="grid grid-cols-1 sm:grid-cols-3 gap-6"
                     style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.9rem' }}
                   >
                     <div>
@@ -317,47 +356,6 @@ export function DesktopEnrollForm() {
                   </div>
                 </div>
 
-                {/* File Upload */}
-                <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>
-                    {ENROLLMENT_FORM.fields.proof}
-                  </label>
-                  <label
-                    className="flex items-center justify-between border px-4 py-3 cursor-pointer transition-colors duration-200"
-                    style={{
-                      borderColor: 'var(--gold-40)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = 'var(--gold)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = 'var(--gold-40)'
-                    }}
-                  >
-                    <span
-                      className="text-sm truncate"
-                      style={{ color: fileName ? 'var(--cream)' : 'var(--cream-35)' }}
-                    >
-                      {fileName || ENROLLMENT_FORM.placeholders.file}
-                    </span>
-                    <span
-                      className="text-xs tracking-wide"
-                      style={{ color: 'var(--gold)', letterSpacing: '0.04em' }}
-                    >
-                      Browse
-                    </span>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      name="proof_of_payment"
-                      accept="image/*,application/pdf"
-                      required
-                      style={{ display: 'none' }}
-                      onChange={handleFileChange}
-                    />
-                  </label>
-                </div>
-
                 {/* Error Message */}
                 {error && (
                   <p className="text-xs" style={{ color: '#e08a6a', fontFamily: 'JetBrains Mono, monospace' }}>
@@ -368,16 +366,16 @@ export function DesktopEnrollForm() {
                 {/* Hidden Honeypot */}
                 <input type="text" name="botcheck" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
-                {/* Submit Button */}
+                {/* Submit / Confirm Application Button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-8 py-3 text-sm font-600 tracking-tight transition-all duration-300 mt-8"
+                  className="w-full px-8 py-3 text-sm font-600 tracking-tight transition-all duration-300 mt-8 uppercase"
                   style={{
-                    backgroundColor: isSubmitting ? 'var(--gold)' : 'var(--gold)',
+                    backgroundColor: 'var(--gold)',
                     color: 'var(--ink)',
                     fontSize: '0.85rem',
-                    letterSpacing: '0.03em',
+                    letterSpacing: '0.05em',
                     opacity: isSubmitting ? 0.6 : 1,
                     cursor: isSubmitting ? 'not-allowed' : 'pointer',
                   }}
@@ -392,7 +390,7 @@ export function DesktopEnrollForm() {
                     e.currentTarget.style.boxShadow = 'none'
                   }}
                 >
-                  {isSubmitting ? 'Sending...' : ENROLLMENT_FORM.button}
+                  {isSubmitting ? 'Processing Application...' : ENROLLMENT_FORM.button}
                 </button>
               </form>
             )}

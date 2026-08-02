@@ -80,24 +80,6 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     )
   }
-  if (!proof || proof.size === 0) {
-    return NextResponse.json(
-      { success: false, message: 'Please attach proof of payment.' },
-      { status: 400 }
-    )
-  }
-  if (proof.size > MAX_FILE_BYTES) {
-    return NextResponse.json(
-      { success: false, message: 'File too large — please attach an image or PDF under 5MB.' },
-      { status: 400 }
-    )
-  }
-  if (!ALLOWED_FILE_TYPES.includes(proof.type)) {
-    return NextResponse.json(
-      { success: false, message: 'Please attach a JPG, PNG, WebP, or PDF file.' },
-      { status: 400 }
-    )
-  }
 
   const accessKey = process.env.WEB3FORMS_KEY
   if (!accessKey) {
@@ -109,19 +91,18 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Rebuild a fresh FormData to forward to Web3Forms — it accepts
-    // multipart submissions directly, attachment included, no separate
-    // file-storage service needed for a form this size.
     const outgoing = new FormData()
     outgoing.append('access_key', accessKey)
-    outgoing.append('subject', 'New Solalina Photography School enrollment')
+    outgoing.append('subject', `New Enrollment: ${name} (${course})`)
     outgoing.append('from_name', 'Solalina Photography School')
     outgoing.append('replyto', email)
     outgoing.append('name', name)
     outgoing.append('phone', phone)
     outgoing.append('email', email)
     outgoing.append('course', course)
-    outgoing.append('attachment', proof, proof.name)
+    if (proof && proof.size > 0 && proof.size <= MAX_FILE_BYTES) {
+      outgoing.append('attachment', proof, proof.name)
+    }
 
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
