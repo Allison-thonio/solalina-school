@@ -1,13 +1,13 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import Image from 'next/image'
 import { GALLERY_IMAGES } from '@/app/data'
 import { ScrollReveal } from '../ScrollReveal'
 import { SprocketDivider } from '../SprocketDivider'
 
 export function DesktopGallery() {
-  const imageVariants = {
+  const imageVariants: Variants = {
     hidden: { opacity: 0, scale: 0.95, y: 12 },
     visible: (custom: number) => ({
       opacity: 1,
@@ -16,7 +16,6 @@ export function DesktopGallery() {
       transition: {
         delay: custom * 0.1,
         duration: 0.6,
-        ease: 'easeOut',
       },
     }),
   }
